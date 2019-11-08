@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { fetchSmurfs } from '../actions/index';
@@ -15,13 +15,20 @@ const App = props => {
     return <h2>Loading Smurfs...</h2>;
   }
 
-  console.log(props.smurfs)
+  const updateSmurfs = () => {
+    props.fetchSmurfs();
+  }
+
   return (
     <div>
+      <h1> Add a Smurf</h1>
       <SmurfForm />
+      <h1> Smurf Village <button onClick={updateSmurfs}>Update Village</button></h1>
+      <p> Current Population: {props.smurfs.length}</p>
       {props.error && <p>{props.error}</p>}
       {props.smurfs.map(smurf => (
-          <Smurf key={smurf.id} 
+        <Smurf key={smurf.id} 
+        id={smurf.id} 
           name={smurf.name} 
           age={smurf.age}
           height={smurf.height}/>

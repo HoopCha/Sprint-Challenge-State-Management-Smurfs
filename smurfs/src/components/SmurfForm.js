@@ -1,33 +1,50 @@
-import React, { useState } from 'react';
-import { useDispatch} from 'react-redux';
-import {postData} from '../actions/index';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { postSmurf } from "../actions/index";
 
-const SmurfForm = () => {
+const SmurfForm = props => { 
+  const [newSmurf, setNewSmurf] = useState({
+    name: '',
+    age: '',
+    height: ''
+  })
 
-    const dispatch = useDispatch()
-    const [newSmurf, setNewSmurf] = useState({
-        name: '',
-        height: '',
-        age: '',
+  useEffect(() => {
+    setNewSmurf({
+      name: '',
+      age: '',
+      height: ''
     })
+  }, [props.Clear])
 
-    const changeHandler = event => {
-        setNewSmurf({
-            ...newSmurf, [event.target.name] : event.target.value
-        })
-    }
-    
-        return (
-            <div>
-                <div>
-                    <input type='text' name='name' placeholder='Name' onChange={changeHandler}/>
-                    <input type='text' name='age' placeholder='Age' onChange={changeHandler}/>
-                    <input type='text' name='height' placeholder='Height' onChange={changeHandler}/>
-                    <button onClick={() => dispatch(postData(newSmurf))}>Submit</button>
-                </div>
-            </div>
-        )
+  const handleChange = event => {
+    setNewSmurf({...newSmurf, [event.target.name]:event.target.value})
+  }
+
+  const addSmurf = smurf => {
+    props.postSmurf(smurf)
+  }
+  
+  
+  const refresh = (smurf) => {
+    addSmurf(smurf)  
+    //window.location.reload()
 }
 
-export default SmurfForm;
+  return (
+    <div>
+      <input placeholder="Name" name="name" value={newSmurf.name} onChange={handleChange}/>
+      <input placeholder="Age" name="age" value={newSmurf.age} onChange={handleChange}/>
+      <input placeholder="Height" name="height" value={newSmurf.height} onChange={handleChange}/>
+      <button onClick={() => refresh(newSmurf)}>Add Smurf</button>
+    </div>
+  )
+}
+
+const mapStateToProps = state => {
+  return ({
+    Clear:state
+  })
+}
+
+export default connect (mapStateToProps, { postSmurf })(SmurfForm);

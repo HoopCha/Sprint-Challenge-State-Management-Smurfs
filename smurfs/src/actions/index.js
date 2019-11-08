@@ -19,15 +19,24 @@ export const fetchSmurfs = () => dispatch => {
     .catch(err => dispatch({ type: FETCH_FAILURE, payload: err.response }));
 };
 
+export const ADD_SMURF = 'ADD_SMURFS';
 
-export const SAVE_SMURF = 'SAVE_SMURF';
-export const SAVE_SUCCESS = 'SAVE_SUCCESS';
-export const SAVE_FAILURE = 'SAVE_FAILURE';
-
-export const postData = (newSmurf) => (dispatch) => {
-    dispatch({type: SAVE_SMURF})
+export const postSmurf = smurf => dispatch => {
+  return (
     axios
-    .post('http://localhost:3333/smurfs', newSmurf) 
-    .then(res => dispatch({type: SAVE_SUCCESS, payload: res.data}))
-        .catch(err => dispatch({ type: SAVE_FAILURE, payload: err.response}))
+      .post('http://localhost:3333/smurfs', smurf)
+      .then(res => dispatch({type:ADD_SMURF, payload:res}))
+      .catch(err => console.log('Try again! Error: ', err))
+  )
+}
+
+export const REMOVE_SMURF = 'REMOVE_SMURF';
+
+export const deleteSmurf = id => dispatch => {
+  return (
+    axios
+      .delete(`http://localhost:3333/smurfs/${id}`)
+      .then(res => dispatch({type:REMOVE_SMURF}))
+      .catch(err => console.log(err))
+  )
 }

@@ -1,14 +1,7 @@
-import { START_FETCHING, FETCH_SUCCESS, FETCH_FAILURE, SAVE_SMURF, SAVE_SUCCESS, SAVE_FAILURE } from '../actions';
+import { START_FETCHING, FETCH_SUCCESS, FETCH_FAILURE, ADD_SMURF, REMOVE_SMURF } from '../actions';
 
 const initialState = {
-  smurfs: [
-    {
-        name: '',
-        age: 0,
-        height: '',
-        id: 0
-    }
-],
+  smurfs: [],
   isFetching: false,
   error: ''
 };
@@ -34,24 +27,13 @@ const reducer = (state = initialState, action) => {
         error: action.payload,
         isFetching: false
       };
-    case SAVE_SMURF:
+      case ADD_SMURF:
         return {
-            ...state,
-            loading: true,
-            error: ''
+          ...state, 
         }
-    case SAVE_SUCCESS: 
+      case REMOVE_SMURF:
         return {
-            ...state,
-            loading: false,
-            smurfData: action.payload,
-            error: ''
-        }
-    case SAVE_FAILURE:
-        return {
-            ...state,
-            loading: false,
-            error: action.payload
+          ...state,
         }
     default:
       return state;
