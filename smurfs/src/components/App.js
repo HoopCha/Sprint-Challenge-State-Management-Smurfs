@@ -4,6 +4,14 @@ import { connect } from 'react-redux';
 import { fetchSmurfs } from '../actions/index';
 import Smurf from './Smurf';
 import SmurfForm from "./SmurfForm";
+import styled from 'styled-components'
+
+
+const Cards = styled.div`
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+`
 
 const App = props => {
 
@@ -26,6 +34,7 @@ const App = props => {
       <h1> Smurf Village <button onClick={updateSmurfs}>Update Village</button></h1>
       <p> Current Population: {props.smurfs.length}</p>
       {props.error && <p>{props.error}</p>}
+      <Cards>
       {props.smurfs.map(smurf => (
         <Smurf key={smurf.id} 
         id={smurf.id} 
@@ -33,6 +42,7 @@ const App = props => {
           age={smurf.age}
           height={smurf.height}/>
       ))}
+      </Cards>
     </div>
   );
 };
